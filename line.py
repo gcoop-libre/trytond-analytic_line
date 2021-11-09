@@ -1,5 +1,6 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+
 from trytond.model import fields
 from trytond.pool import PoolMeta
 
@@ -25,7 +26,8 @@ class Line(metaclass=PoolMeta):
 
     @classmethod
     def search_party(cls, name, clause):
-        return [('move_line.origin.party', clause[1], clause[2], 'account.invoice')]
+        return [('move_line.origin.party', clause[1], clause[2],
+            'account.invoice')]
 
     @classmethod
     def get_invoice(self, lines, name=None):
@@ -40,4 +42,5 @@ class Line(metaclass=PoolMeta):
 
     @classmethod
     def search_invoice(cls, name, clause):
-        return [('move_line.origin.rec_name', clause[1], clause[2], 'account.invoice')]
+        return [('move_line.origin.rec_name', clause[1], clause[2],
+            'account.invoice')]
