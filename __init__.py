@@ -7,5 +7,6 @@ from . import line
 
 def register():
     Pool.register(
+        line.MoveLine,
         line.Line,
         module='analytic_line', type_='model')
