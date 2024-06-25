@@ -2,6 +2,12 @@
 <tryton>
     <data>
 
+        <record model="ir.ui.view" id="move_line_view_tree_move">
+            <field name="model">account.move.line</field>
+            <field name="inherit" ref="account.move_line_view_tree_move"/>
+            <field name="name">move_line_tree_move</field>
+        </record>
+
         <record model="ir.ui.view" id="line_view_tree">
             <field name="model">analytic_account.line</field>
             <field name="inherit" ref="analytic_account.line_view_tree"/>
