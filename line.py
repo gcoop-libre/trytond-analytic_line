@@ -5,17 +5,37 @@ from trytond.model import fields
 from trytond.pool import PoolMeta
 
 
+class Move(metaclass=PoolMeta):
+    __name__ = 'account.move'
+
+    @classmethod
+    def write(cls, *args):
+        super(Move, cls).write(*args)
+        actions = iter(args)
+        for moves, values in zip(actions, actions):
+            if 'date' not in values:
+                continue
+            date = values['date']
+            for move in moves:
+                for move_line in (move.lines or []):
+                    for line in (move_line.analytic_lines or []):
+                        line.date = date
+                        line.save()
+
+
 class MoveLine(metaclass=PoolMeta):
     __name__ = 'account.move.line'
 
     @fields.depends('analytic_lines', 'debit')
     def on_change_debit(self):
+        super().on_change_debit()
         if len(self.analytic_lines) == 1:
             for line in self.analytic_lines:
                 line.debit = self.debit
 
     @fields.depends('analytic_lines', 'credit')
     def on_change_credit(self):
+        super().on_change_credit()
         if len(self.analytic_lines) == 1:
             for line in self.analytic_lines:
                 line.credit = self.credit
