@@ -26,19 +26,21 @@ class Move(metaclass=PoolMeta):
 class MoveLine(metaclass=PoolMeta):
     __name__ = 'account.move.line'
 
-    @fields.depends('analytic_lines', 'debit')
+    @fields.depends('analytic_lines', 'debit', 'credit')
     def on_change_debit(self):
         super().on_change_debit()
         if len(self.analytic_lines) == 1:
             for line in self.analytic_lines:
                 line.debit = self.debit
+                line.credit = self.credit
 
-    @fields.depends('analytic_lines', 'credit')
+    @fields.depends('analytic_lines', 'credit', 'debit')
     def on_change_credit(self):
         super().on_change_credit()
         if len(self.analytic_lines) == 1:
             for line in self.analytic_lines:
                 line.credit = self.credit
+                line.debit = self.debit
 
 
 class Line(metaclass=PoolMeta):
