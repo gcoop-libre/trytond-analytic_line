@@ -1,6 +1,7 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 
+from trytond.pyson import Eval
 from trytond.model import fields
 from trytond.pool import PoolMeta
 
@@ -46,7 +47,8 @@ class MoveLine(metaclass=PoolMeta):
 class Line(metaclass=PoolMeta):
     __name__ = 'analytic_account.line'
 
-    party = fields.Function(fields.Many2One('party.party', 'Party'),
+    party = fields.Function(fields.Many2One('party.party', 'Party',
+        context={'company': Eval('company')}),
         'get_party', searcher='search_party')
     invoice = fields.Function(fields.Many2One('account.invoice', 'Invoice'),
         'get_invoice', searcher='search_invoice')
